@@ -1,0 +1,102 @@
+@baseUrl = http://localhost:3000
+@apiKey = rahasia123
+
+### 1. GET daftar semua buku (200)
+GET {{baseUrl}}/buku
+
+### 2. GET filter kategori sains (200)
+GET {{baseUrl}}/buku?kategori=sains
+
+### 3. GET detail buku tersedia (200)
+GET {{baseUrl}}/buku/1
+
+### 4. GET detail buku tidak tersedia (404 NOT_FOUND)
+GET {{baseUrl}}/buku/9999
+
+### 5. URL tidak dikenal (404 ROUTE_NOT_FOUND)
+GET {{baseUrl}}/tidak-ada
+
+### 6. POST buku valid (201)
+POST {{baseUrl}}/buku
+Content-Type: application/json
+x-api-key: {{apiKey}}
+
+{
+  "judul": "Dasar Pemrograman API",
+  "penulis": "Budi Santoso",
+  "tahun": 2024,
+  "stok": 5,
+  "kategori": "sains"
+}
+
+### 7. POST tanpa API Key (401)
+POST {{baseUrl}}/buku
+Content-Type: application/json
+
+{
+  "judul": "Buku Tanpa Kunci",
+  "penulis": "Budi Santoso",
+  "tahun": 2024,
+  "kategori": "sains"
+}
+
+### 8. POST data tidak valid (422, semua kesalahan dikumpulkan)
+POST {{baseUrl}}/buku
+Content-Type: application/json
+x-api-key: {{apiKey}}
+
+{
+  "judul": "A",
+  "penulis": "B",
+  "tahun": 3000,
+  "stok": 200,
+  "kategori": "komik"
+}
+
+### 9. POST judul duplikat (409 JUDUL_DUPLIKAT)
+POST {{baseUrl}}/buku
+Content-Type: application/json
+x-api-key: {{apiKey}}
+
+{
+  "judul": "lASKAR PELANGI",
+  "penulis": "Penulis Lain",
+  "tahun": 2020,
+  "kategori": "novel"
+}
+
+### 10. DELETE buku tersedia (204, tanpa body)
+DELETE {{baseUrl}}/buku/6
+x-api-key: {{apiKey}}
+
+### 11. DELETE buku tidak tersedia (404)
+DELETE {{baseUrl}}/buku/9999
+x-api-key: {{apiKey}}
+
+### BONUS 12. PUT update buku (200)
+PUT {{baseUrl}}/buku/1
+Content-Type: application/json
+x-api-key: {{apiKey}}
+
+{
+  "judul": "Laskar Pelangi Edisi Revisi",
+  "penulis": "Andrea Hirata",
+  "tahun": 2005,
+  "stok": 9,
+  "kategori": "novel"
+}
+
+### BONUS 13. PUT id tidak ditemukan (404)
+PUT {{baseUrl}}/buku/9999
+Content-Type: application/json
+x-api-key: {{apiKey}}
+
+{
+  "judul": "Buku Baru",
+  "penulis": "Penulis Baru",
+  "tahun": 2024,
+  "kategori": "sains"
+}
+
+### SIMULASI ERROR 500
+GET {{baseUrl}}/buku/error-500
